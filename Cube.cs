@@ -28,28 +28,53 @@ namespace FractalGenerator
 
     public class Cube
     {
-        List<Square> squares;
-        public Cube(List<Square> squares)
+        public List<Square> squares;
+        public Cube()
         {
-            /*
-            this.squares = squares;
+            squares = new List<Square>();
+        }
+        public void Add(Square s1, Square s2, Square s3, Square s4, Square s5, Square s6) {
+            squares.Add(s1);
+            squares.Add(s2);
+            squares.Add(s3);
+            squares.Add(s4);
+            squares.Add(s5);
+            squares.Add(s6);
+        }
+        public Cube translate(float shrinkFactor, float translate_x, float translate_y, float translate_z)
+        {
+
+            Cube newCube = new Cube();
             foreach (Square s in this.squares)
             {
-                Square temp = new Square(new Vector3[4], s.c);
-
-                for(int i = 0; i < 4; i++) {
-                    Console.WriteLine(s.v[i].X);
-                    temp.v[i].X = s.v[i].X / 6f;
-                    Console.WriteLine(s.v[i].X);
-                    //Console.ReadKey();
-                    temp.v[i].Y = s.v[i].Y / 6f;
-                    temp.v[i].Z = s.v[i].Z / 6f;
-                }
-                Program.drawSquare(temp, 0.5f);
+                newCube.squares.Add(new Square(new Vector3[] {
+                        new Vector3(s.v[0].X / shrinkFactor + translate_x, s.v[0].Y / shrinkFactor + translate_y, s.v[0].Z / shrinkFactor + translate_z),
+                        new Vector3(s.v[1].X / shrinkFactor + translate_x, s.v[1].Y / shrinkFactor + translate_y, s.v[1].Z / shrinkFactor + translate_z),
+                        new Vector3(s.v[2].X / shrinkFactor + translate_x, s.v[2].Y / shrinkFactor + translate_y, s.v[2].Z / shrinkFactor + translate_z),
+                        new Vector3(s.v[3].X / shrinkFactor + translate_x, s.v[3].Y / shrinkFactor + translate_y, s.v[3].Z / shrinkFactor + translate_z)
+                        }
+                    , s.c));
             }
-            */
+            return newCube;
         }
 
-        
+        public List<Cube> translateAll(float shrinkFactor)
+        {
+            List<Cube> cubes = new List<Cube>();
+            Cube cube_posX = this.translate(shrinkFactor, 1.5f, 0, 0);
+            Cube cube_negX = this.translate(shrinkFactor, -1.5f, 0, 0);
+            Cube cube_posY = this.translate(shrinkFactor, 0, 1.5f, 0);
+            Cube cube_negY = this.translate(shrinkFactor, 0, -1.5f, 0);
+            Cube cube_posZ = this.translate(shrinkFactor, 0, 0, 1.5f);
+            Cube cube_negZ = this.translate(shrinkFactor, 0, 0, -1.5f);
+            cubes.Add(cube_posX);
+            cubes.Add(cube_posY);
+            cubes.Add(cube_posZ);
+            cubes.Add(cube_negX);
+            cubes.Add(cube_negY);
+            cubes.Add(cube_negZ);
+            return cubes;
+        }
+
     }
 }

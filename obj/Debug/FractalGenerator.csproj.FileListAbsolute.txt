@@ -9,3 +9,15 @@ C:\Users\ab\source\repos\FractalGenerator\FractalGenerator\obj\Debug\FractalGene
 C:\Users\ab\source\repos\FractalGenerator\FractalGenerator\obj\Debug\FractalGenerator.csproj.CopyComplete
 C:\Users\ab\source\repos\FractalGenerator\FractalGenerator\obj\Debug\FractalGenerator.exe
 C:\Users\ab\source\repos\FractalGenerator\FractalGenerator\obj\Debug\FractalGenerator.pdb
+C:\Users\Andrew\source\repos\FractalGenerator\FractalGenerator\obj\Debug\FractalGenerator.csprojAssemblyReference.cache
+C:\Users\Andrew\source\repos\FractalGenerator\FractalGenerator\obj\Debug\FractalGenerator.csproj.CoreCompileInputs.cache
+C:\Users\Andrew\source\repos\FractalGenerator\FractalGenerator\obj\Debug\FractalGenerator.exe
+C:\Users\Andrew\source\repos\FractalGenerator\FractalGenerator\obj\Debug\FractalGenerator.pdb
+C:\Users\Andrew\source\repos\FractalGenerator\FractalGenerator\bin\Debug\FractalGenerator.exe.config
+C:\Users\Andrew\source\repos\FractalGenerator\FractalGenerator\bin\Debug\FractalGenerator.exe
+C:\Users\Andrew\source\repos\FractalGenerator\FractalGenerator\bin\Debug\FractalGenerator.pdb
+C:\Users\Andrew\source\repos\FractalGenerator\FractalGenerator\bin\Debug\OpenGL.dll
+C:\Users\Andrew\source\repos\FractalGenerator\FractalGenerator\bin\Debug\Tao.FreeGlut.dll
+C:\Users\Andrew\source\repos\FractalGenerator\FractalGenerator\bin\Debug\OpenGL.dll.config
+C:\Users\Andrew\source\repos\FractalGenerator\FractalGenerator\bin\Debug\Tao.FreeGlut.xml
+C:\Users\Andrew\source\repos\FractalGenerator\FractalGenerator\obj\Debug\FractalGenerator.csproj.CopyComplete

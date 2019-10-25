@@ -7,17 +7,13 @@ namespace FractalGenerator
 {
     class Program
     {
-        private static int width = 1920, height = 1080;
+        private static int width = 1200, height = 720;
         private static ShaderProgram program;
-        private static VBO<Vector3> pyramid, cube;
-        private static VBO<int> pyramidElements, cubeElements;
-        private static VBO<Vector3> pyramidColor, cubeColor;
         private static System.Diagnostics.Stopwatch watch;
         private static float angle;
         public static Square s1, s2, s3, s4, s5, s6;
-        public static List<Square> sqs1, sqs2, sqs3, sqs4, sqs5, sqs6, sqs7;
-        public static List<List<Square>> listoflist;
         public static int n;
+        public static List<Cube> cubes;
 
         static void Main(string[] args)
         {
@@ -25,7 +21,7 @@ namespace FractalGenerator
             Glut.glutInit();
             Glut.glutInitDisplayMode(Glut.GLUT_DOUBLE | Glut.GLUT_DEPTH);
             Glut.glutInitWindowSize(width, height);
-            Glut.glutCreateWindow("Open GL Tutorial");
+            Glut.glutCreateWindow("Fractal");
 
             Glut.glutIdleFunc(OnRenderFrame);
             Glut.glutDisplayFunc(OnDisplay);
@@ -59,19 +55,12 @@ namespace FractalGenerator
                 new Vector3[] { new Vector3(1, 0, 0), new Vector3(1, 0, 0), new Vector3(1, 0, 0), new Vector3(1, 0, 0) }
                 ); //left
 
-            listoflist = new List<List<Square>>();
+            Cube initialCube = new Cube();
+            initialCube.Add(s1, s2, s3, s4, s5, s6);
+            cubes = new List<Cube>();
+            cubes.Add(initialCube);
 
-
-            sqs1 = new List<Square>();
-            sqs1.Add(s1);
-            sqs1.Add(s2);
-            sqs1.Add(s3);
-            sqs1.Add(s4);
-            sqs1.Add(s5);
-            sqs1.Add(s6);
-            //listoflist.Add(sqs1);
-
-            recur(n, sqs1, 2f);
+            addCubes(n, initialCube, 2f);
 
             program.Use();
             program["projection_matrix"].SetValue(Matrix4.CreatePerspectiveFieldOfView(0.75f, (float)width / height, 0.1f, 1000f));
@@ -98,10 +87,10 @@ namespace FractalGenerator
 
             program.Use();
 
-            //draw square 
-            foreach (List<Square> list in listoflist)
+
+            foreach (Cube c in cubes)
             {
-                foreach (Square s in list)
+                foreach (Square s in c.squares)
                 {
                     drawSquare(s, 0);
                 }
@@ -110,86 +99,37 @@ namespace FractalGenerator
 
             Glut.glutSwapBuffers();
             
-
         }
 
         public static void drawSquare(Square square, float translateX)
         {
             //program["model_matrix"].SetValue(Matrix4.CreateTranslation(new Vector3(translateX, 0, 0)));
 
-            program["model_matrix"].SetValue(Matrix4.CreateRotationY(angle) * Matrix4.CreateRotationX(angle) * Matrix4.CreateTranslation(new Vector3(translateX, 0, 0)));
+            program["model_matrix"].SetValue(Matrix4.CreateRotationY(angle/10f) * Matrix4.CreateRotationX(angle/10f) * Matrix4.CreateTranslation(new Vector3(translateX, 0, 0)));
             Gl.BindBufferToShaderAttribute(square.square, program, "vertexPosition");
             Gl.BindBufferToShaderAttribute(square.color, program, "vertexColor");
             Gl.BindBuffer(square.elements);
-            Gl.DrawElements(BeginMode.Quads, square.elements.Count, DrawElementsType.UnsignedInt, IntPtr.Zero);
+            Gl.DrawElements(BeginMode.Patches, square.elements.Count, DrawElementsType.UnsignedInt, IntPtr.Zero);
         }
 
-        public static List<Square> changeSquare(List<Square> sqs, float div, float transX, float transY, float transZ, float xangle)
+        public static void addCubes(int n, Cube originalCube, float shrinkFactor)
         {
-            List<Square> ret = new List<Square>();
-            foreach (Square s in sqs)
+            if (n != 0) 
             {
-                Square temp = new Square(new Vector3[]
-                    {
-                        new Vector3(s.v[0].X / div + transX, s.v[0].Y / div + transY, s.v[0].Z / div + transZ),
-                        new Vector3(s.v[1].X / div + transX, s.v[1].Y / div + transY, s.v[1].Z / div + transZ),
-                        new Vector3(s.v[2].X / div + transX, s.v[2].Y / div + transY, s.v[2].Z / div + transZ),
-                        new Vector3(s.v[3].X / div + transX, s.v[3].Y / div + transY, s.v[3].Z / div + transZ)
-                    }
-                    , s.c);
-                ret.Add(temp);
+                List<Cube> newCubes = originalCube.translateAll(shrinkFactor);
+                cubes.AddRange(newCubes);
+                foreach (Cube c in newCubes)
+                {
+                    addCubes(n - 1, c, shrinkFactor);
+                }
             }
-            return ret;
-        }
-
-        public static void recur(int n, List<Square> sqs, float div, float angle) 
-        {
-            if (n != 0)
-            {
-                List<Square> l1 = changeSquare(sqs, div, 1.5f, 0, 0, angle);
-                List<Square> l2 = changeSquare(sqs, div, -1.5f, 0, 0, angle);
-                List<Square> l3 = changeSquare(sqs, div, 0, 1.5f, 0, angle);
-                List<Square> l4 = changeSquare(sqs, div, 0, -1.5f, 0, angle);
-                List<Square> l5 = changeSquare(sqs, div, 0, 0, 1.5f, angle);
-                List<Square> l6 = changeSquare(sqs, div, 0, 0, -1.5f, angle);
-                listoflist.Add(l1);
-                listoflist.Add(l2);
-                listoflist.Add(l3);
-                listoflist.Add(l4);
-                listoflist.Add(l5);
-                listoflist.Add(l6);
-                recur(n - 1, l1, div, angle);
-                recur(n - 1, l2, div, angle);
-                recur(n - 1, l3, div, angle);
-                recur(n - 1, l4, div, angle);
-                recur(n - 1, l5, div, angle);
-                recur(n - 1, l6, div, angle);
-            }
-        }
-
-        public static Vector3 rotatePoint(Vector3 vector, float xangle, float yangle, float zangle) 
-        {
-            Vector3 newVec;
-            if (xangle != 0) 
-            {
-            
-            }
-            if (yangle != 0)
-            {
-
-            }
-            if(zangle != 0)
-            {
-
-            }
-            return newVec;
         }
 
         private static void OnClose()
         {
-            foreach (List<Square> list in listoflist)
+            foreach (Cube c in cubes)
             {
-                foreach (Square s in list)
+                foreach (Square s in c.squares)
                 {
                     s.square.Dispose();
                     s.elements.Dispose();
