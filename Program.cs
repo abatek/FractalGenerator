@@ -109,7 +109,7 @@ namespace FractalGenerator
             Gl.BindBufferToShaderAttribute(square.square, program, "vertexPosition");
             Gl.BindBufferToShaderAttribute(square.color, program, "vertexColor");
             Gl.BindBuffer(square.elements);
-            Gl.DrawElements(BeginMode.Patches, square.elements.Count, DrawElementsType.UnsignedInt, IntPtr.Zero);
+            Gl.DrawElements(BeginMode.Quads, square.elements.Count, DrawElementsType.UnsignedInt, IntPtr.Zero);
         }
 
         public static void addCubes(int n, Cube originalCube, float shrinkFactor)
