@@ -33,6 +33,7 @@ namespace FractalGenerator
         {
             squares = new List<Square>();
         }
+        //adds squares to list of squares - 6 squares make up cube
         public void Add(Square s1, Square s2, Square s3, Square s4, Square s5, Square s6) {
             squares.Add(s1);
             squares.Add(s2);
@@ -41,9 +42,9 @@ namespace FractalGenerator
             squares.Add(s5);
             squares.Add(s6);
         }
+        //translate and scale current cube, returns new cube
         public Cube translate(float shrinkFactor, float translate_x, float translate_y, float translate_z)
         {
-
             Cube newCube = new Cube();
             foreach (Square s in this.squares)
             {
@@ -57,7 +58,7 @@ namespace FractalGenerator
             }
             return newCube;
         }
-
+        //translate and scales list of cubes by preset factors for standard fractal to clean up recursive method
         public List<Cube> translateAll(float shrinkFactor)
         {
             List<Cube> cubes = new List<Cube>();
